@@ -936,6 +936,3 @@ if (mainPage) {
 } else {
     console.error("mainPage elementi bulunamadı!");
 }
-    </script>
-</body>
-</html>
