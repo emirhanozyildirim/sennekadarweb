@@ -1,21 +1,29 @@
-
-        body {
+body {
             font-family: 'Inter', sans-serif;
             background-color: #F79F1F; /* Ana turuncu arka plan */
             color: #fff;
         }
-        .btn-primary {
+        .btn-primary, .joker-btn {
             background-color: #4A90E2; /* Mavi buton rengi */
             color: white;
             padding: 12px 24px;
             border-radius: 8px;
             font-weight: 600;
             text-align: center;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, opacity 0.3s ease;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        .btn-primary:hover {
+        .btn-primary:hover, .joker-btn:hover:not(:disabled) {
             background-color: #357ABD; /* Mavi buton hover rengi */
+        }
+        .joker-btn {
+            padding: 10px 15px;
+            font-size: 0.9em;
+        }
+        .joker-btn:disabled {
+            background-color: #a0aec0;
+            cursor: not-allowed;
+            opacity: 0.6;
         }
         .btn-secondary {
             background-color: #2ECC71; /* Yeşil buton rengi */
@@ -93,28 +101,46 @@
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .quiz-option-btn {
             background-color: #4A90E2; color: white; padding: 10px 15px; border-radius: 6px;
-            font-weight: 500; transition: background-color 0.3s ease, opacity 0.3s ease;
+            font-weight: 500; transition: background-color 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
             border: 2px solid transparent; cursor: pointer;
+        }
+        .quiz-option-btn.hidden-by-joker {
+            visibility: hidden; 
+            opacity: 0;
+            pointer-events: none;
         }
         .quiz-option-btn:hover:not(.disabled):not(.answered) { background-color: #357ABD; }
         .quiz-option-btn.selected-transient { background-color: #F79F1F; border-color: #fff; }
         .quiz-option-btn.correct { background-color: #2ECC71 !important; color: white !important; opacity: 1 !important; }
         .quiz-option-btn.incorrect { background-color: #E74C3C !important; color: white !important; opacity: 1 !important; }
         .quiz-option-btn.disabled, .quiz-option-btn.faded { opacity: 0.5; cursor: not-allowed; }
-        .modal-content {
+        .modal-content, .expert-modal-content {
             background-color: #4A5568; color: #fff; padding: 24px; border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3); max-width: 500px; width: 90%;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3); max-width: 500px; width: 90%; text-align: center;
+            position: relative; /* Close button için */
         }
         .modal-content img.result-badge-img { max-width: 100px; max-height: 100px; margin: 0 auto 1rem; }
         .modal-content img.result-comment-img { max-width: 200px; max-height: 150px; object-fit: contain; margin: 1rem auto; border-radius: 8px; }
+        .expert-modal-content .expert-image { width: 120px; height: 120px; object-fit: cover; border-radius: 50%; margin: 1rem auto; }
         #authStatus {
             position: fixed; top: 10px; right: 10px; background-color: rgba(0,0,0,0.7);
             padding: 5px 10px; border-radius: 5px; font-size: 0.9em; z-index: 100;
         }
         #authButtonGoogle { 
-             display: none; /* ŞİMDİLİK GİZLENDİ (CSS ile) */
-             margin-left: 10px; background-color: #dd4b39; /* Google kırmızısı */
-             color: white;
-             padding: 3px 8px; border-radius: 4px;
+             display: none; 
+             margin-left: 10px; background-color: #dd4b39; 
+             color: white; padding: 3px 8px; border-radius: 4px;
         }
-    
+        .close-modal-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.8rem; 
+            line-height: 1; 
+            color: #ccc;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.25rem 0.5rem; 
+        }
+        .close-modal-btn:hover { color: #fff; }

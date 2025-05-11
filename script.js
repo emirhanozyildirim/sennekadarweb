@@ -1,4 +1,281 @@
+</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F79F1F; /* Ana turuncu arka plan */
+            color: #fff;
+        }
+        .btn-primary, .joker-btn {
+            background-color: #4A90E2; /* Mavi buton rengi */
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+            transition: background-color 0.3s ease, opacity 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary:hover, .joker-btn:hover:not(:disabled) {
+            background-color: #357ABD; /* Mavi buton hover rengi */
+        }
+        .joker-btn {
+            padding: 10px 15px;
+            font-size: 0.9em;
+        }
+        .joker-btn:disabled {
+            background-color: #a0aec0;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        .btn-secondary {
+            background-color: #2ECC71; /* Yeşil buton rengi */
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            text-align: center;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .btn-secondary:hover {
+            background-color: #27AE60; /* Yeşil buton hover rengi */
+        }
+        .card {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .input-field {
+            background-color: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 10px;
+            border-radius: 6px;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+        .input-field::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+        .error-message {
+            color: #FFCCCC; /* Açık kırmızı */
+            font-size: 0.9em;
+            margin-top: -0.5rem;
+            margin-bottom: 0.5rem;
+            display: none; /* Başlangıçta gizli */
+        }
+        .item-card {
+            background-color: #ffffff;
+            color: #333;
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 150px;
+        }
+        .item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        .item-card img {
+            width: 60px; height: 60px; object-fit: contain; margin-bottom: 0.75rem;
+        }
+        .item-card .placeholder-icon {
+            font-size: 2.5rem; margin-bottom: 0.75rem; color: #F79F1F;
+        }
+        .page { display: none; }
+        .page.active { display: block; }
+        #loadingIndicator {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.5); z-index: 9999; justify-content: center; align-items: center;
+        }
+        .spinner {
+            border: 8px solid #f3f3f3; border-top: 8px solid #4A90E2; border-radius: 50%;
+            width: 60px; height: 60px; animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .quiz-option-btn {
+            background-color: #4A90E2; color: white; padding: 10px 15px; border-radius: 6px;
+            font-weight: 500; transition: background-color 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+            border: 2px solid transparent; cursor: pointer;
+        }
+        .quiz-option-btn.hidden-by-joker {
+            visibility: hidden; 
+            opacity: 0;
+            pointer-events: none;
+        }
+        .quiz-option-btn:hover:not(.disabled):not(.answered) { background-color: #357ABD; }
+        .quiz-option-btn.selected-transient { background-color: #F79F1F; border-color: #fff; }
+        .quiz-option-btn.correct { background-color: #2ECC71 !important; color: white !important; opacity: 1 !important; }
+        .quiz-option-btn.incorrect { background-color: #E74C3C !important; color: white !important; opacity: 1 !important; }
+        .quiz-option-btn.disabled, .quiz-option-btn.faded { opacity: 0.5; cursor: not-allowed; }
+        .modal-content, .expert-modal-content {
+            background-color: #4A5568; color: #fff; padding: 24px; border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3); max-width: 500px; width: 90%; text-align: center;
+            position: relative; /* Close button için */
+        }
+        .modal-content img.result-badge-img { max-width: 100px; max-height: 100px; margin: 0 auto 1rem; }
+        .modal-content img.result-comment-img { max-width: 200px; max-height: 150px; object-fit: contain; margin: 1rem auto; border-radius: 8px; }
+        .expert-modal-content .expert-image { width: 120px; height: 120px; object-fit: cover; border-radius: 50%; margin: 1rem auto; }
+        #authStatus {
+            position: fixed; top: 10px; right: 10px; background-color: rgba(0,0,0,0.7);
+            padding: 5px 10px; border-radius: 5px; font-size: 0.9em; z-index: 100;
+        }
+        #authButtonGoogle { 
+             display: none; 
+             margin-left: 10px; background-color: #dd4b39; 
+             color: white; padding: 3px 8px; border-radius: 4px;
+        }
+        .close-modal-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.8rem; 
+            line-height: 1; 
+            color: #ccc;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.25rem 0.5rem; 
+        }
+        .close-modal-btn:hover { color: #fff; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
 
+    <div id="authStatus">
+        <span id="authText">Giriş yapılmadı</span>
+        <button id="authButtonGoogle"><i class="fab fa-google mr-1"></i> Google ile Giriş</button>
+    </div>
+
+    <div id="loadingIndicator" class="flex">
+        <div class="spinner"></div>
+    </div>
+
+    <div id="mainPage" class="page active w-full max-w-md text-center">
+        <img src="https://placehold.co/300x100/F79F1F/FFFFFF?text=SEN+NE+KADAR%3F&font=Impact" alt="Uygulama Logosu" class="mx-auto mb-8 rounded-lg">
+        <div class="space-y-4">
+            <button id="btnKategoriler" class="btn-primary w-full">KATEGORİLER</button>
+            <button id="btnProfil" class="btn-primary w-full">PROFİL / GİRİŞ</button>
+            <button id="btnRozetlerim" class="btn-primary w-full">ROZETLERİM</button>
+            <button id="btnLiderTablosu" class="btn-primary w-full">LİDER TABLOSU</button>
+        </div>
+        <button id="btnAyarlar" class="mt-8 text-white hover:text-gray-300"><i class="fas fa-cog fa-2x"></i></button>
+    </div>
+
+    <div id="categoriesPage" class="page w-full max-w-3xl">
+        <div class="flex justify-between items-center mb-6 px-2">
+            <button id="btnBackNavigation" class="text-white hover:text-gray-300 p-2"><i class="fas fa-arrow-left fa-2x"></i></button>
+            <h1 id="categoriesPageTitle" class="text-3xl font-bold text-center text-white flex-grow">Kategoriler</h1>
+            <div class="w-10 h-10"></div> </div>
+        <div id="breadcrumbContainer" class="text-center text-gray-200 mb-4"></div>
+        <div id="mainCategoryGridContainer"><div id="mainCategoryGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 p-2"></div></div>
+        <div id="subCategoryGridContainer" style="display: none;"><div id="subCategoryGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 p-2"></div></div>
+        <div id="quizGridContainer" style="display: none;"><div id="quizGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 p-2"></div></div>
+    </div>
+
+    <div id="profilePage" class="page w-full max-w-md text-center">
+        <button id="btnBackToMainFromProfile" class="absolute top-4 left-4 text-white hover:text-gray-300 p-2"><i class="fas fa-arrow-left fa-lg"></i> Ana Sayfa</button>
+        <h1 class="text-4xl font-bold mb-8 text-white">Profil</h1>
+        <div id="authFormContainer" class="card" style="display: none;">
+            <h2 class="text-2xl font-semibold mb-6 text-white">Giriş Yap / Kayıt Ol</h2>
+            <input type="email" id="emailInput" placeholder="E-posta Adresiniz" class="input-field">
+            <p id="emailError" class="error-message">Geçerli bir e-posta adresi girin.</p>
+            <input type="password" id="passwordInput" placeholder="Şifreniz" class="input-field">
+            <p id="authError" class="error-message"></p>
+            <div class="flex space-x-4 mt-4">
+                <button id="btnCreateAccount" class="btn-secondary w-1/2">Hesap Oluştur</button>
+                <button id="btnLogin" class="btn-primary w-1/2">Giriş Yap</button>
+            </div>
+        </div>
+        <div id="profileContentContainer" class="card" style="display: none;">
+            <p id="profileContentText">Profil bilgileri yükleniyor...</p>
+        </div>
+    </div>
+
+    <div id="badgesPage" class="page w-full max-w-md text-center">
+        <button class="btn-back-to-main-simple absolute top-4 left-4 text-white hover:text-gray-300 p-2"><i class="fas fa-arrow-left fa-lg"></i> Ana Sayfa</button>
+        <h1 class="text-4xl font-bold mb-8 text-white">Rozetlerim</h1>
+        <div id="badgesContent" class="card grid grid-cols-3 gap-4"><p class="col-span-3">Rozetler yükleniyor...</p></div>
+    </div>
+
+    <div id="leaderboardPage" class="page w-full max-w-md text-center">
+        <button class="btn-back-to-main-simple absolute top-4 left-4 text-white hover:text-gray-300 p-2"><i class="fas fa-arrow-left fa-lg"></i> Ana Sayfa</button>
+        <h1 class="text-4xl font-bold mb-8 text-white">Lider Tablosu</h1>
+        <div id="leaderboardContent" class="card">
+            <p>Lider tablosu yükleniyor...</p>
+        </div>
+    </div>
+
+    <div id="settingsModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4" style="display: none; z-index: 1000;">
+        <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-sm text-gray-800">
+            <h2 class="text-2xl font-semibold mb-4">Ayarlar</h2>
+            <p id="userEmailForSettings" class="my-2"></p>
+            <button id="btnLogout" class="btn-primary w-full mt-4" style="background-color: #E74C3C;">Çıkış Yap</button>
+            <button id="btnCloseSettings" class="btn-secondary w-full mt-6">Kapat</button>
+        </div>
+    </div>
+
+    <div id="quizPage" class="page w-full max-w-2xl text-center">
+         <button id="btnKategorilereDonQuiz" class="absolute top-4 left-4 text-white hover:text-gray-300 p-2"><i class="fas fa-arrow-left fa-lg"></i> Kategoriler</button>
+        <h1 id="quizPageTitle" class="text-3xl font-bold mb-2 text-white">Quiz Başlıyor!</h1>
+        <p id="quizBreadcrumb" class="text-sm text-gray-300 mb-4"></p>
+        <div class="card">
+            <img id="quizQuestionImage" src="" alt="Soru Resmi" class="mx-auto mb-4 rounded-lg max-h-60 object-contain" style="display:none;">
+            <p id="quizQuestionText" class="text-xl text-white mb-6">Sorular ve cevap seçenekleri burada gösterilecek.</p>
+            <div id="quizOptionsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+            <div class="mt-6 flex justify-center items-center"><span id="questionCounter" class="text-white text-lg">Soru 1 / 10</span></div>
+            
+            <div id="jokerContainer" class="mt-8 flex justify-center space-x-4" style="display: none;">
+                <button id="btnFiftyFifty" class="joker-btn"><i class="fas fa-adjust mr-2"></i>Yarı Yarıya</button>
+                <button id="btnAskExpert" class="joker-btn"><i class="fas fa-user-tie mr-2"></i>Uzmana Sor</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="quizResultModal" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center p-4" style="display: none; z-index: 1000;">
+        <div class="modal-content">
+            <button id="btnCloseResultModal" class="close-modal-btn">×</button>
+            <h2 id="resultModalTitle" class="text-2xl font-bold mb-4">Quiz Sonucu</h2>
+            <p id="resultModalScore" class="text-xl mb-2"></p>
+            <img id="resultModalCommentImage" src="" alt="Yorum Resmi" class="result-comment-img" style="display:none;">
+            <p id="resultModalComment" class="text-lg my-3"></p>
+            <div id="resultModalBadgeContainer" class="mt-4">
+                <h3 class="text-lg font-semibold">Kazanılan Rozet:</h3>
+                <img id="resultModalBadgeImage" src="" alt="Rozet Resmi" class="result-badge-img" style="display:none;">
+                <p id="resultModalBadgeName" class="text-md"></p>
+            </div>
+        </div>
+    </div>
+    
+    <div id="expertAdviceModal" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center p-4" style="display: none; z-index: 1050;">
+        <div class="expert-modal-content">
+            <button id="btnCloseExpertModal" class="close-modal-btn">×</button>
+            <h2 class="text-xl font-bold mb-3">Uzman Tavsiyesi</h2>
+            <img id="expertImage" src="https://placehold.co/120x120/718096/FFFFFF?text=UZMAN&font=Inter" alt="Uzman Resmi" class="expert-image">
+            <p id="expertText" class="text-md my-3">Uzman düşünüyor...</p>
+            <p id="expertSuggestion" class="text-lg font-semibold mt-2"></p>
+        </div>
+    </div>
+
+    <button id="btnGoToMainFixed" class="fixed bottom-4 right-4 bg-amber-500 hover:bg-amber-600 text-white p-3 rounded-full shadow-lg z-50 transition-opacity duration-300 opacity-0 pointer-events-none" title="Ana Menüye Dön">
+        <i class="fas fa-home fa-lg"></i>
+    </button>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+
+    <script>
         const firebaseConfig = { 
             apiKey: "AIzaSyD_MyAPTo1aI6ksKNoX2O7HDdWH6VFcEZQ", 
             authDomain: "sennekadarfirebasedeneme.firebaseapp.com",
@@ -72,10 +349,18 @@
         const resultModalBadgeContainer = document.getElementById('resultModalBadgeContainer');
         const resultModalBadgeImage = document.getElementById('resultModalBadgeImage');
         const resultModalBadgeName = document.getElementById('resultModalBadgeName');
-        const btnCloseResultModal = document.getElementById('btnCloseResultModal');
+        const btnCloseResultModal = document.getElementById('btnCloseResultModal'); 
         const authStatusText = document.getElementById('authText');
         const authButtonGoogle = document.getElementById('authButtonGoogle');
         const btnGoToMainFixed = document.getElementById('btnGoToMainFixed');
+        const jokerContainer = document.getElementById('jokerContainer');
+        const btnFiftyFifty = document.getElementById('btnFiftyFifty');
+        const btnAskExpert = document.getElementById('btnAskExpert');
+        const expertAdviceModal = document.getElementById('expertAdviceModal');
+        const expertImage = document.getElementById('expertImage');
+        const expertText = document.getElementById('expertText');
+        const expertSuggestion = document.getElementById('expertSuggestion');
+        const btnCloseExpertModal = document.getElementById('btnCloseExpertModal');
 
 
         let currentSelectedMainCategory = null, currentSelectedSubCategory = null, currentSelectedQuiz = null;
@@ -83,13 +368,14 @@
         const NAV_STATE = { MAIN_CATEGORIES: 'MAIN_CATEGORIES', SUB_CATEGORIES: 'SUB_CATEGORIES', QUIZZES: 'QUIZZES' };
         let currentCategoriesPageState = NAV_STATE.MAIN_CATEGORIES;
         const FEEDBACK_DELAY = 500, NEXT_QUESTION_DELAY = 2000;
+        let fiftyFiftyUsed = false;
+        let askExpertUsed = false;
 
         // --- AUTHENTICATION ---
         auth.onAuthStateChanged(user => {
             if (user) {
                 currentUser = user;
                 if(authStatusText) authStatusText.textContent = `Giriş: ${user.displayName || user.email.split('@')[0]}`;
-                // if(authButtonGoogle) authButtonGoogle.style.display = 'none'; 
                 if(userEmailForSettings) userEmailForSettings.textContent = `Kullanıcı: ${user.email}`;
                 if(btnLogout) btnLogout.style.display = 'block';
                 
@@ -101,7 +387,6 @@
             } else {
                 currentUser = null;
                 if(authStatusText) authStatusText.textContent = 'Giriş yapılmadı.';
-                // if(authButtonGoogle) authButtonGoogle.style.display = 'inline-block'; 
                 if(userEmailForSettings) userEmailForSettings.textContent = ``;
                 if(btnLogout) btnLogout.style.display = 'none';
                 if (profilePage && profilePage.style.display === 'block') { 
@@ -112,7 +397,6 @@
             }
         });
 
-        // Google ile Giriş Event Listener (ŞİMDİLİK YORUM SATIRI)
         /*
         if(authButtonGoogle) {
             authButtonGoogle.addEventListener('click', () => {
@@ -249,6 +533,15 @@
                 } else {
                     btnGoToMainFixed.classList.add('opacity-0', 'pointer-events-none');
                     btnGoToMainFixed.classList.remove('opacity-100');
+                }
+            }
+            if (jokerContainer) {
+                if (pageToShow && pageToShow.id === 'quizPage' && !questionAnswered) {
+                    jokerContainer.style.display = 'flex';
+                    if(btnFiftyFifty) btnFiftyFifty.disabled = fiftyFiftyUsed;
+                    if(btnAskExpert) btnAskExpert.disabled = askExpertUsed;
+                } else {
+                    jokerContainer.style.display = 'none';
                 }
             }
         }
@@ -420,16 +713,21 @@
                 showLoading(false);
             }
         }
+
         function navigateToQuizPageAndLoadQuestions(mainCatInfo, subCatInfo, quizInfo) { 
             currentQuizQuestions = [];
             userAnswers = [];
             currentQuestionIndex = 0;
             questionAnswered = false;
+            fiftyFiftyUsed = false; 
+            askExpertUsed = false;  
+
             if(quizPageTitle) quizPageTitle.textContent = quizInfo.name; 
             if(quizBreadcrumb) quizBreadcrumb.textContent = `${mainCatInfo.name} > ${subCatInfo.name} > ${quizInfo.name}`;
-            showPage(quizPage);
+            showPage(quizPage); 
             fetchAndDisplayQuestions(mainCatInfo, subCatInfo, quizInfo);
         }
+
         async function fetchAndDisplayQuestions(mainCatInfo, subCatInfo, quizInfo) { 
             if (!firestore || !quizQuestionText || !quizOptionsContainer || !mainCatInfo || !subCatInfo || !quizInfo) return; 
             showLoading(true);
@@ -444,6 +742,7 @@
                 if (snapshot.empty) {
                     quizQuestionText.textContent = "Bu test için soru bulunamadı.";
                     if(questionCounter) questionCounter.style.display = 'none';
+                    if(jokerContainer) jokerContainer.style.display = 'none'; 
                     showLoading(false);
                     return;
                 }
@@ -477,9 +776,16 @@
                 showLoading(false);
             }
         }
+
         function displayQuestion(index) { 
             if (index < 0 || index >= currentQuizQuestions.length || !quizQuestionText || !quizOptionsContainer) return;
             questionAnswered = false; 
+            if(jokerContainer) { 
+                 jokerContainer.style.display = 'flex';
+                 if(btnFiftyFifty) btnFiftyFifty.disabled = fiftyFiftyUsed;
+                 if(btnAskExpert) btnAskExpert.disabled = askExpertUsed;
+            }
+
             const questionData = currentQuizQuestions[index];
             quizQuestionText.textContent = questionData.soruMetni;
             if (questionData.imageURL && quizQuestionImage) {
@@ -499,9 +805,11 @@
             });
             if(questionCounter) questionCounter.textContent = `Soru ${index + 1} / ${currentQuizQuestions.length}`;
         }
+
         function handleAnswerSelection(selectedButton, selectedKey, correctAnswerKey) { 
             if (questionAnswered || !quizOptionsContainer) return; 
             questionAnswered = true;
+            if(jokerContainer) jokerContainer.style.display = 'none'; 
             userAnswers[currentQuestionIndex] = selectedKey;
             const allOptionButtons = quizOptionsContainer.querySelectorAll('.quiz-option-btn');
             allOptionButtons.forEach(btn => {
@@ -529,6 +837,76 @@
             }, FEEDBACK_DELAY);
         }
         
+        function handleFiftyFiftyJoker() {
+            if (fiftyFiftyUsed || questionAnswered || currentQuizQuestions.length === 0 || !quizOptionsContainer) return;
+
+            const currentQuestion = currentQuizQuestions[currentQuestionIndex];
+            const correctAnswerKey = currentQuestion.dogruCevap;
+            const optionButtons = Array.from(quizOptionsContainer.querySelectorAll('.quiz-option-btn:not(.hidden-by-joker)')); 
+            let wrongOptionButtons = optionButtons.filter(opt => opt.dataset.optionKey !== correctAnswerKey);
+
+            let numToRemove = Math.min(2, wrongOptionButtons.length -1); 
+            
+            for (let i = 0; i < numToRemove && wrongOptionButtons.length > 0; i++) {
+                const randomIndex = Math.floor(Math.random() * wrongOptionButtons.length);
+                wrongOptionButtons[randomIndex].classList.add('hidden-by-joker');
+                wrongOptionButtons.splice(randomIndex, 1); 
+            }
+
+            fiftyFiftyUsed = true;
+            if(btnFiftyFifty) btnFiftyFifty.disabled = true;
+        }
+
+        async function handleAskExpertJoker() {
+            if (askExpertUsed || questionAnswered || !firestore) return;
+            showLoading(true);
+            try {
+                const jokerDocRef = firestore.collection('others').doc('joker'); 
+                const docSnap = await jokerDocRef.get();
+
+                if (docSnap.exists) { // Düzeltildi: .exists bir özellik, fonksiyon değil (compat sürüm için)
+                    const jokerData = docSnap.data();
+                    if(expertImage) expertImage.src = jokerData.ImageUrl || 'https://placehold.co/120x120/718096/FFFFFF?text=UZMAN&font=Inter';
+                    if(expertText) expertText.textContent = jokerData.Text || "Biraz düşündükten sonra...";
+
+                    const currentQuestion = currentQuizQuestions[currentQuestionIndex];
+                    const correctAnswerKey = currentQuestion.dogruCevap;
+                    let suggestedKey;
+                    const randomNumber = Math.random(); 
+
+                    if (randomNumber < 0.7) { 
+                        suggestedKey = correctAnswerKey;
+                    } else { 
+                        const allKeys = Object.keys(currentQuestion.siklar);
+                        let availableWrongKeys = allKeys.filter(key => {
+                            const btn = quizOptionsContainer.querySelector(`.quiz-option-btn[data-option-key="${key}"]`);
+                            return key !== correctAnswerKey && btn && !btn.classList.contains('hidden-by-joker');
+                        });
+
+                        if (availableWrongKeys.length > 0) {
+                            suggestedKey = availableWrongKeys[Math.floor(Math.random() * availableWrongKeys.length)];
+                        } else { 
+                            suggestedKey = correctAnswerKey;
+                        }
+                    }
+                    const suggestedAnswerText = currentQuestion.siklar[suggestedKey];
+                    if(expertSuggestion) expertSuggestion.textContent = `Hatırladığım kadarıyla doğru cevap: ${suggestedKey.toUpperCase()}. ${suggestedAnswerText}`;
+                    
+                    if(expertAdviceModal) expertAdviceModal.style.display = 'flex';
+                } else {
+                    console.error("Uzman jokeri için 'others/joker' dökümanı bulunamadı!");
+                    alert("Uzman şu an meşgul, daha sonra tekrar deneyin!");
+                }
+            } catch (error) {
+                console.error("Uzman jokeri alınırken hata:", error);
+                alert("Uzman jokeri yüklenirken bir sorun oluştu.");
+            } finally {
+                showLoading(false);
+            }
+            askExpertUsed = true;
+            if(btnAskExpert) btnAskExpert.disabled = true;
+        }
+
         async function finishQuiz() { 
             showLoading(true);
             let score = 0;
@@ -557,10 +935,10 @@
             let quizSpecificBadgeImageUrl = null;
 
             try {
-                if (currentSelectedMainCategory && currentSelectedSubCategory && currentSelectedQuiz && currentSelectedQuiz.id) { // currentSelectedQuiz.id kontrolü eklendi
+                if (currentSelectedMainCategory && currentSelectedSubCategory && currentSelectedQuiz && currentSelectedQuiz.id) { 
                     const notlarPath = `categories/${currentSelectedMainCategory.id}/subcategories/${currentSelectedSubCategory.id}/quizzes/${currentSelectedQuiz.id}/notlar/${resultCategory}`;
                     const notlarDoc = await firestore.doc(notlarPath).get();
-                    if (notlarDoc.exists) {
+                    if (notlarDoc.exists) { // Düzeltildi
                         const notlarData = notlarDoc.data();
                         if(resultModalComment) resultModalComment.textContent = notlarData.yorum || "Harika bir iş çıkardın!";
                         if (notlarData.imageURL && resultModalCommentImage) {
@@ -573,7 +951,7 @@
 
                     const rozetPath = `categories/${currentSelectedMainCategory.id}/subcategories/${currentSelectedSubCategory.id}/quizzes/${currentSelectedQuiz.id}/rozet/rozet`;
                     const rozetDoc = await firestore.doc(rozetPath).get();
-                    if (rozetDoc.exists) {
+                    if (rozetDoc.exists) { // Düzeltildi
                         const rozetData = rozetDoc.data();
                         quizSpecificBadgeName = rozetData.rozetAdi || rozetData.name || "Quiz Rozeti";
                         quizSpecificBadgeImageUrl = rozetData.rozetPNG || rozetData.imageURL;
@@ -650,6 +1028,11 @@
                 }
             });
         }
+        if(btnCloseExpertModal) {
+            btnCloseExpertModal.addEventListener('click', () => {
+                if(expertAdviceModal) expertAdviceModal.style.display = 'none';
+            });
+        }
 
         if (btnKategoriler) { 
             btnKategoriler.addEventListener('click', () => {
@@ -693,7 +1076,7 @@
             profileContentText.innerHTML = '<p>Profil bilgileri yükleniyor...</p>';
             try {
                 const userDoc = await firestore.collection('users').doc(currentUser.uid).get();
-                if (userDoc.exists) {
+                if (userDoc.exists) { // Düzeltildi
                     const userData = userDoc.data();
                     let html = `
                         <h2 class="text-xl font-semibold mb-2">${userData.displayName || currentUser.email.split('@')[0]}</h2>
@@ -814,10 +1197,20 @@
             });
         }
 
+        if(btnFiftyFifty) {
+            btnFiftyFifty.addEventListener('click', handleFiftyFiftyJoker);
+        }
+        if(btnAskExpert) {
+            btnAskExpert.addEventListener('click', handleAskExpertJoker);
+        }
+        if(btnCloseExpertModal) {
+            btnCloseExpertModal.addEventListener('click', () => {
+                if(expertAdviceModal) expertAdviceModal.style.display = 'none';
+            });
+        }
+
         if (mainPage) { 
             showPage(mainPage);
         } else {
             console.error("mainPage elementi bulunamadı!");
         }
-
-    
