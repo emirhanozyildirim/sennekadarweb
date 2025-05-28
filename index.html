@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sen Ne Kadar? - Web Quiz</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="style.css"> <!-- CSS dosyamızın bağlantısı -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-4">
 
@@ -20,15 +22,28 @@
         <div class="spinner"></div>
     </div>
 
+    <!-- YAN REKLAM ALANLARI (Sadece geniş ekranlarda görünecek) -->
+    <div class="ad-sidebar ad-sidebar-left">
+        <!-- Sol Dikey AdSense Kodu Buraya (Test ID: HEIGHTxWIDTH) -->
+        <!-- Örn: <ins class="adsbygoogle" style="display:inline-block;width:160px;height:600px" data-ad-client="ca-pub-xxxxxxxxxxxxxxxx" data-ad-slot="yyyyyyyyyy"></ins> -->
+        <span class="text-xs text-gray-400">Sol Reklam Alanı (160x600)</span>
+    </div>
+    <div class="ad-sidebar ad-sidebar-right">
+        <!-- Sağ Dikey AdSense Kodu Buraya (Test ID: HEIGHTxWIDTH) -->
+        <span class="text-xs text-gray-400">Sağ Reklam Alanı (160x600)</span>
+    </div>
+
+
     <div id="mainPage" class="page active w-full max-w-md text-center">
-        <img src="https://placehold.co/300x100/F79F1F/FFFFFF?text=SEN+NE+KADAR%3F&font=Impact" alt="Uygulama Logosu" class="mx-auto mb-8 rounded-lg">
+        <h1 id="mainLogoTitle" class="text-6xl font-extrabold mb-10 text-white">SEN NE KADAR?</h1>
+        
         <div class="space-y-4">
             <button id="btnKategoriler" class="btn-primary w-full">KATEGORİLER</button>
             <button id="btnProfil" class="btn-primary w-full">PROFİL / GİRİŞ</button>
             <button id="btnRozetlerim" class="btn-primary w-full">ROZETLERİM</button>
             <button id="btnLiderTablosu" class="btn-primary w-full">LİDER TABLOSU</button>
         </div>
-        <button id="btnAyarlar" class="mt-8 text-white hover:text-gray-300"><i class="fas fa-cog fa-2x"></i></button>
+        <button id="btnAyarlar" class="mt-10 text-white hover:text-gray-300"><i class="fas fa-cog fa-2x"></i></button>
     </div>
 
     <div id="categoriesPage" class="page w-full max-w-3xl">
@@ -130,9 +145,18 @@
         <i class="fas fa-home fa-lg"></i>
     </button>
 
+    <!-- ALT BANNER REKLAM ALANI -->
+    <div class="ad-banner-bottom">
+        <!-- Alt Banner AdSense Kodu Buraya (Test ID: 320x50 veya 728x90 vb.) -->
+        <!-- Örn: <ins class="adsbygoogle" style="display:inline-block;width:320px;height:50px" data-ad-client="ca-pub-xxxxxxxxxxxxxxxx" data-ad-slot="zzzzzzzzzz"></ins> -->
+        <span class="text-xs text-gray-400">Alt Banner Reklam Alanı</span>
+    </div>
+
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
-    <script src="script.js"></script> <!-- JavaScript dosyamızın bağlantısı -->
+    <script src="script.js"></script> 
+    <!-- AdSense Ana Scripti (Yayıncı ID'nizle değiştirin) -->
+    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_PUBLISHER_ID" crossorigin="anonymous"></script> -->
 </body>
 </html>
