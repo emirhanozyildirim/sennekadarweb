@@ -1,3 +1,5 @@
+// script.js
+
 const firebaseConfig = { 
     apiKey: "AIzaSyD_MyAPTo1aI6ksKNoX2O7HDdWH6VFcEZQ", 
     authDomain: "sennekadarfirebasedeneme.firebaseapp.com",
@@ -248,7 +250,7 @@ function showPage(pageToShow) {
         pageToShow.style.display = 'block';
     } else if (mainPage) { 
         mainPage.style.display = 'block';
-        pageToShow = mainPage; // İlk yüklemede pageToShow null olabilir
+        pageToShow = mainPage; 
     }
 
     if (btnGoToMainFixed) {
@@ -269,7 +271,6 @@ function showPage(pageToShow) {
             jokerContainer.style.display = 'none';
         }
     }
-     // Yan reklamların olduğu sayfalarda body'e class ekle/kaldır
     if (pageToShow && (pageToShow.id === 'mainPage' || pageToShow.id === 'quizPage')) {
         bodyElement.classList.add('has-side-ads');
     } else {
@@ -946,5 +947,3 @@ if (mainPage) {
     console.error("mainPage elementi bulunamadı!");
 }
 </script>
-</body>
-</html>
