@@ -242,10 +242,13 @@ if(btnLogin) {
 function showPage(pageToShow) { 
     document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
     
+    const bodyElement = document.body;
+
     if (pageToShow) {
         pageToShow.style.display = 'block';
     } else if (mainPage) { 
         mainPage.style.display = 'block';
+        pageToShow = mainPage; // İlk yüklemede pageToShow null olabilir
     }
 
     if (btnGoToMainFixed) {
@@ -265,6 +268,12 @@ function showPage(pageToShow) {
         } else {
             jokerContainer.style.display = 'none';
         }
+    }
+     // Yan reklamların olduğu sayfalarda body'e class ekle/kaldır
+    if (pageToShow && (pageToShow.id === 'mainPage' || pageToShow.id === 'quizPage')) {
+        bodyElement.classList.add('has-side-ads');
+    } else {
+        bodyElement.classList.remove('has-side-ads');
     }
 }
 document.querySelectorAll('.btn-back-to-main-simple').forEach(button => { 
@@ -586,9 +595,9 @@ async function handleAskExpertJoker() {
         const jokerDocRef = firestore.collection('others').doc('joker'); 
         const docSnap = await jokerDocRef.get();
 
-        if (docSnap.exists) { // Düzeltildi
+        if (docSnap.exists) { 
             const jokerData = docSnap.data();
-            if(expertImage) expertImage.src = jokerData.ImageUrl || 'https://placehold.co/120x120/718096/FFFFFF?text=UZMAN&font=Inter'; // Düzeltildi
+            if(expertImage) expertImage.src = jokerData.ImageUrl || 'https://placehold.co/120x120/718096/FFFFFF?text=UZMAN&font=Inter'; 
             if(expertText) expertText.textContent = jokerData.Text || "Biraz düşündükten sonra...";
 
             const currentQuestion = currentQuizQuestions[currentQuestionIndex];
@@ -660,7 +669,7 @@ async function finishQuiz() {
         if (currentSelectedMainCategory && currentSelectedSubCategory && currentSelectedQuiz && currentSelectedQuiz.id) { 
             const notlarPath = `categories/${currentSelectedMainCategory.id}/subcategories/${currentSelectedSubCategory.id}/quizzes/${currentSelectedQuiz.id}/notlar/${resultCategory}`;
             const notlarDoc = await firestore.doc(notlarPath).get();
-            if (notlarDoc.exists) { // Düzeltildi
+            if (notlarDoc.exists) { 
                 const notlarData = notlarDoc.data();
                 if(resultModalComment) resultModalComment.textContent = notlarData.yorum || "Harika bir iş çıkardın!";
                 if (notlarData.imageURL && resultModalCommentImage) {
@@ -673,7 +682,7 @@ async function finishQuiz() {
 
             const rozetPath = `categories/${currentSelectedMainCategory.id}/subcategories/${currentSelectedSubCategory.id}/quizzes/${currentSelectedQuiz.id}/rozet/rozet`;
             const rozetDoc = await firestore.doc(rozetPath).get();
-            if (rozetDoc.exists) { // Düzeltildi
+            if (rozetDoc.exists) { 
                 const rozetData = rozetDoc.data();
                 quizSpecificBadgeName = rozetData.rozetAdi || rozetData.name || "Quiz Rozeti";
                 quizSpecificBadgeImageUrl = rozetData.rozetPNG || rozetData.imageURL;
@@ -798,7 +807,7 @@ async function loadUserProfile() {
     profileContentText.innerHTML = '<p>Profil bilgileri yükleniyor...</p>';
     try {
         const userDoc = await firestore.collection('users').doc(currentUser.uid).get();
-        if (userDoc.exists) { // Düzeltildi
+        if (userDoc.exists) { 
             const userData = userDoc.data();
             let html = `
                 <h2 class="text-xl font-semibold mb-2">${userData.displayName || currentUser.email.split('@')[0]}</h2>
@@ -936,3 +945,6 @@ if (mainPage) {
 } else {
     console.error("mainPage elementi bulunamadı!");
 }
+</script>
+</body>
+</html>
