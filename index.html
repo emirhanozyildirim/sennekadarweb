@@ -9,7 +9,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=1.0.3"> <!-- Cache Busting -->
+    
+    <!-- AdSense Ana Scripti (Test Yayıncı ID'si ile) -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3940256099942544"
+         crossorigin="anonymous"></script>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-4">
 
@@ -22,21 +26,28 @@
         <div class="spinner"></div>
     </div>
 
-    <!-- YAN REKLAM ALANLARI (Sadece geniş ekranlarda görünecek) -->
+    <!-- YAN REKLAM ALANLARI -->
     <div class="ad-sidebar ad-sidebar-left">
-        <!-- Sol Dikey AdSense Kodu Buraya (Test ID: HEIGHTxWIDTH) -->
-        <!-- Örn: <ins class="adsbygoogle" style="display:inline-block;width:160px;height:600px" data-ad-client="ca-pub-xxxxxxxxxxxxxxxx" data-ad-slot="yyyyyyyyyy"></ins> -->
-        <span class="text-xs text-gray-400">Sol Reklam Alanı (160x600)</span>
+        <ins class="adsbygoogle"
+             style="display:inline-block;width:160px;height:600px"
+             data-ad-client="ca-pub-3940256099942544"
+             data-ad-slot="1927879002"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
     </div>
     <div class="ad-sidebar ad-sidebar-right">
-        <!-- Sağ Dikey AdSense Kodu Buraya (Test ID: HEIGHTxWIDTH) -->
-        <span class="text-xs text-gray-400">Sağ Reklam Alanı (160x600)</span>
+        <ins class="adsbygoogle"
+             style="display:inline-block;width:160px;height:600px"
+             data-ad-client="ca-pub-3940256099942544"
+             data-ad-slot="1927879002"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
     </div>
-
 
     <div id="mainPage" class="page active w-full max-w-md text-center">
         <h1 id="mainLogoTitle" class="text-6xl font-extrabold mb-10 text-white">SEN NE KADAR?</h1>
-        
         <div class="space-y-4">
             <button id="btnKategoriler" class="btn-primary w-full">KATEGORİLER</button>
             <button id="btnProfil" class="btn-primary w-full">PROFİL / GİRİŞ</button>
@@ -145,18 +156,19 @@
         <i class="fas fa-home fa-lg"></i>
     </button>
 
-    <!-- ALT BANNER REKLAM ALANI -->
     <div class="ad-banner-bottom">
-        <!-- Alt Banner AdSense Kodu Buraya (Test ID: 320x50 veya 728x90 vb.) -->
-        <!-- Örn: <ins class="adsbygoogle" style="display:inline-block;width:320px;height:50px" data-ad-client="ca-pub-xxxxxxxxxxxxxxxx" data-ad-slot="zzzzzzzzzz"></ins> -->
-        <span class="text-xs text-gray-400">Alt Banner Reklam Alanı</span>
+        <ins class="adsbygoogle"
+             style="display:inline-block;width:320px;height:50px"
+             data-ad-client="ca-pub-3940256099942544"
+             data-ad-slot="6300978111"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
-    <script src="script.js"></script> 
-    <!-- AdSense Ana Scripti (Yayıncı ID'nizle değiştirin) -->
-    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_PUBLISHER_ID" crossorigin="anonymous"></script> -->
+    <script src="script.js?v=1.0.3"></script> <!-- Cache Busting -->
 </body>
 </html>
