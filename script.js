@@ -1,4 +1,4 @@
-// script.js (Bir önceki mesajdaki tam JavaScript kodu buraya gelecek)
+// script.js
 
 const firebaseConfig = { 
     apiKey: "AIzaSyD_MyAPTo1aI6ksKNoX2O7HDdWH6VFcEZQ", 
@@ -75,7 +75,7 @@ const resultModalBadgeImage = document.getElementById('resultModalBadgeImage');
 const resultModalBadgeName = document.getElementById('resultModalBadgeName');
 const btnCloseResultModal = document.getElementById('btnCloseResultModal'); 
 const authStatusText = document.getElementById('authText');
-const authButtonGoogle = document.getElementById('authButtonGoogle');
+const authButtonGoogle = document.getElementById('authButtonGoogle'); 
 const btnGoToMainFixed = document.getElementById('btnGoToMainFixed');
 const jokerContainer = document.getElementById('jokerContainer');
 const btnFiftyFifty = document.getElementById('btnFiftyFifty');
@@ -100,6 +100,7 @@ auth.onAuthStateChanged(user => {
     if (user) {
         currentUser = user;
         if(authStatusText) authStatusText.textContent = `Giriş: ${user.displayName || user.email.split('@')[0]}`;
+        if(authButtonGoogle) authButtonGoogle.style.display = 'none'; 
         if(userEmailForSettings) userEmailForSettings.textContent = `Kullanıcı: ${user.email}`;
         if(btnLogout) btnLogout.style.display = 'block';
         
@@ -111,6 +112,7 @@ auth.onAuthStateChanged(user => {
     } else {
         currentUser = null;
         if(authStatusText) authStatusText.textContent = 'Giriş yapılmadı.';
+        if(authButtonGoogle) authButtonGoogle.style.display = 'none'; // Google butonu şimdilik hep gizli
         if(userEmailForSettings) userEmailForSettings.textContent = ``;
         if(btnLogout) btnLogout.style.display = 'none';
         if (profilePage && profilePage.style.display === 'block') { 
@@ -121,8 +123,8 @@ auth.onAuthStateChanged(user => {
     }
 });
 
-/*
-if(authButtonGoogle) {
+/* // Google ile Giriş Event Listener YORUM SATIRINDA
+if(authButtonGoogle) { 
     authButtonGoogle.addEventListener('click', () => {
         if (!auth) { console.error("Firebase Auth başlatılmamış!"); return; }
         const provider = new firebase.auth.GoogleAuthProvider();
@@ -131,29 +133,29 @@ if(authButtonGoogle) {
                 console.log("Google ile giriş başarılı:", result.user);
                 const user = result.user;
                 const userRef = firestore.collection('users').doc(user.uid);
-                const googleUserRef = firestore.collection('googleUsers').doc(user.uid); 
-                const batch = firestore.batch();
-                batch.set(userRef, {
+                
+                await userRef.set({ 
                     displayName: user.displayName || user.email.split('@')[0],
                     email: user.email,
-                    leaderboardPuan: 0,
-                    authProvider: "google"
-                }, { merge: true });
-                batch.set(googleUserRef, {
-                    uid: user.uid,
-                    displayName: user.displayName,
-                    email: user.email,
-                    photoURL: user.photoURL,
+                    photoURL: user.photoURL, 
+                    authProvider: "google",
                     lastLogin: firebase.firestore.FieldValue.serverTimestamp()
                 }, { merge: true });
-                await batch.commit();
+
+                const userDoc = await userRef.get();
+                if (!userDoc.data() || typeof userDoc.data().leaderboardPuan === 'undefined') {
+                    await userRef.update({ leaderboardPuan: 0 });
+                }
+                
                 showPage(mainPage); 
             })
             .catch((error) => {
                 console.error("Google ile giriş hatası:", error);
-                if (authError) { 
+                if (authError && profilePage.style.display === 'block') { 
                     authError.textContent = `Google ile giriş hatası: ${error.message}`;
                     authError.style.display = 'block';
+                } else {
+                    alert(`Google ile giriş sırasında bir hata oluştu. Lütfen tekrar deneyin. (${error.code})`);
                 }
             });
     });
@@ -811,11 +813,13 @@ async function loadUserProfile() {
         if (userDoc.exists) { 
             const userData = userDoc.data();
             let html = `
+                ${userData.photoURL ? `<img src="${userData.photoURL}" alt="Profil Resmi" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-white">` : ''}
                 <h2 class="text-xl font-semibold mb-2">${userData.displayName || currentUser.email.split('@')[0]}</h2>
                 <p class="mb-1">Email: ${currentUser.email}</p>
                 <p class="mb-4">Liderlik Puanı: ${userData.leaderboardPuan || 0}</p>
+                <p class="text-xs text-gray-400 mb-3">Giriş Yöntemi: ${userData.authProvider || 'Bilinmiyor'}</p>
                 <h3 class="text-lg font-medium mt-3 mb-2">Çözülen Quizler:</h3>
-                <ul class="list-disc list-inside text-left text-sm">`;
+                <ul class="list-disc list-inside text-left text-sm max-h-48 overflow-y-auto">`; 
             
             const solvedQuizzesSnapshot = await firestore.collection('users').doc(currentUser.uid).collection('solvedQuizzes').orderBy('tarih', 'desc').limit(10).get(); 
             if (solvedQuizzesSnapshot.empty) {
@@ -823,7 +827,7 @@ async function loadUserProfile() {
             } else {
                 solvedQuizzesSnapshot.forEach(doc => {
                     const quizData = doc.data();
-                    html += `<li>${doc.id}: ${quizData.puan} puan (${new Date(quizData.tarih.toDate()).toLocaleDateString()})</li>`;
+                    html += `<li>${doc.id.replace(/_/g, ' ')}: ${quizData.puan} puan (${new Date(quizData.tarih.toDate()).toLocaleDateString()})</li>`; 
                 });
             }
             html += '</ul>';
