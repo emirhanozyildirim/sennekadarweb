@@ -9,13 +9,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=1.0.3"> <!-- Cache Busting -->
+    <link rel="stylesheet" href="style.css?v=1.0.5"> <!-- Cache Busting -->
     
-    <!-- AdSense Ana Scripti (Test Yayıncı ID'si ile) -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3940256099942544"
+    <!-- AdSense Ana Scripti (Sizin Yayıncı ID'niz ile) -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1515600459324972"
          crossorigin="anonymous"></script>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center p-4">
+<body class="min-h-screen flex flex-col items-center justify-center p-4 overflow-x-hidden">
 
     <div id="authStatus">
         <span id="authText">Giriş yapılmadı</span>
@@ -30,8 +30,8 @@
     <div class="ad-sidebar ad-sidebar-left">
         <ins class="adsbygoogle"
              style="display:inline-block;width:160px;height:600px"
-             data-ad-client="ca-pub-3940256099942544"
-             data-ad-slot="1927879002"></ins>
+             data-ad-client="ca-pub-3940256099942544" <!-- Test Client ID -->
+             data-ad-slot="1927879002"></ins> <!-- Test Slot ID -->
         <script>
              (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
@@ -39,36 +39,37 @@
     <div class="ad-sidebar ad-sidebar-right">
         <ins class="adsbygoogle"
              style="display:inline-block;width:160px;height:600px"
-             data-ad-client="ca-pub-3940256099942544"
-             data-ad-slot="1927879002"></ins>
+             data-ad-client="ca-pub-3940256099942544" <!-- Test Client ID -->
+             data-ad-slot="1927879002"></ins> <!-- Test Slot ID -->
         <script>
              (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
     </div>
 
-    <div id="mainPage" class="page active w-full max-w-md text-center">
-        <h1 id="mainLogoTitle" class="text-6xl font-extrabold mb-10 text-white">SEN NE KADAR?</h1>
-        <div class="space-y-4">
-            <button id="btnKategoriler" class="btn-primary w-full">KATEGORİLER</button>
-            <button id="btnProfil" class="btn-primary w-full">PROFİL / GİRİŞ</button>
-            <button id="btnRozetlerim" class="btn-primary w-full">ROZETLERİM</button>
-            <button id="btnLiderTablosu" class="btn-primary w-full">LİDER TABLOSU</button>
+    <div id="mainPage" class="page active w-full max-w-lg text-center px-4">
+        <h1 id="mainLogoTitle" class="text-5xl sm:text-6xl font-extrabold mb-10 text-white">SEN NE KADAR?</h1>
+        <div class="space-y-3 sm:space-y-4">
+            <button id="btnKategoriler" class="btn-primary w-full max-w-xs mx-auto">KATEGORİLER</button>
+            <button id="btnProfil" class="btn-primary w-full max-w-xs mx-auto">PROFİL / GİRİŞ</button>
+            <button id="btnRozetlerim" class="btn-primary w-full max-w-xs mx-auto">ROZETLERİM</button>
+            <button id="btnLiderTablosu" class="btn-primary w-full max-w-xs mx-auto">LİDER TABLOSU</button>
         </div>
-        <button id="btnAyarlar" class="mt-10 text-white hover:text-gray-300"><i class="fas fa-cog fa-2x"></i></button>
+        <button id="btnAyarlar" class="mt-12 text-white hover:text-gray-300"><i class="fas fa-cog fa-2x"></i></button>
     </div>
 
-    <div id="categoriesPage" class="page w-full max-w-3xl">
-        <div class="flex justify-between items-center mb-6 px-2">
+    <div id="categoriesPage" class="page w-full max-w-4xl px-2">
+        <div class="flex justify-between items-center mb-6">
             <button id="btnBackNavigation" class="text-white hover:text-gray-300 p-2"><i class="fas fa-arrow-left fa-2x"></i></button>
-            <h1 id="categoriesPageTitle" class="text-3xl font-bold text-center text-white flex-grow">Kategoriler</h1>
-            <div class="w-10 h-10"></div> </div>
-        <div id="breadcrumbContainer" class="text-center text-gray-200 mb-4"></div>
-        <div id="mainCategoryGridContainer"><div id="mainCategoryGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 p-2"></div></div>
-        <div id="subCategoryGridContainer" style="display: none;"><div id="subCategoryGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 p-2"></div></div>
-        <div id="quizGridContainer" style="display: none;"><div id="quizGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 p-2"></div></div>
+            <h1 id="categoriesPageTitle" class="text-3xl sm:text-4xl font-bold text-center text-white flex-grow">Kategoriler</h1>
+            <div class="w-10 sm:w-12"></div>
+        </div>
+        <div id="breadcrumbContainer" class="text-center text-gray-200 mb-4 text-sm sm:text-base"></div>
+        <div id="mainCategoryGridContainer"><div id="mainCategoryGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4 p-1 sm:p-2"></div></div>
+        <div id="subCategoryGridContainer" style="display: none;"><div id="subCategoryGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4 p-1 sm:p-2"></div></div>
+        <div id="quizGridContainer" style="display: none;"><div id="quizGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4 p-1 sm:p-2"></div></div>
     </div>
 
-    <div id="profilePage" class="page w-full max-w-md text-center">
+    <div id="profilePage" class="page w-full max-w-md text-center px-4">
         <button id="btnBackToMainFromProfile" class="absolute top-4 left-4 text-white hover:text-gray-300 p-2"><i class="fas fa-arrow-left fa-lg"></i> Ana Sayfa</button>
         <h1 class="text-4xl font-bold mb-8 text-white">Profil</h1>
         <div id="authFormContainer" class="card" style="display: none;">
@@ -77,9 +78,9 @@
             <p id="emailError" class="error-message">Geçerli bir e-posta adresi girin.</p>
             <input type="password" id="passwordInput" placeholder="Şifreniz" class="input-field">
             <p id="authError" class="error-message"></p>
-            <div class="flex space-x-4 mt-4">
-                <button id="btnCreateAccount" class="btn-secondary w-1/2">Hesap Oluştur</button>
-                <button id="btnLogin" class="btn-primary w-1/2">Giriş Yap</button>
+            <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 mt-4">
+                <button id="btnCreateAccount" class="btn-secondary w-full sm:w-1/2">Hesap Oluştur</button>
+                <button id="btnLogin" class="btn-primary w-full sm:w-1/2">Giriş Yap</button>
             </div>
         </div>
         <div id="profileContentContainer" class="card" style="display: none;">
@@ -87,13 +88,13 @@
         </div>
     </div>
 
-    <div id="badgesPage" class="page w-full max-w-md text-center">
+    <div id="badgesPage" class="page w-full max-w-lg text-center px-4">
         <button class="btn-back-to-main-simple absolute top-4 left-4 text-white hover:text-gray-300 p-2"><i class="fas fa-arrow-left fa-lg"></i> Ana Sayfa</button>
         <h1 class="text-4xl font-bold mb-8 text-white">Rozetlerim</h1>
-        <div id="badgesContent" class="card grid grid-cols-3 gap-4"><p class="col-span-3">Rozetler yükleniyor...</p></div>
+        <div id="badgesContent" class="card grid grid-cols-2 sm:grid-cols-3 gap-4"><p class="col-span-full">Rozetler yükleniyor...</p></div>
     </div>
 
-    <div id="leaderboardPage" class="page w-full max-w-md text-center">
+    <div id="leaderboardPage" class="page w-full max-w-md text-center px-4">
         <button class="btn-back-to-main-simple absolute top-4 left-4 text-white hover:text-gray-300 p-2"><i class="fas fa-arrow-left fa-lg"></i> Ana Sayfa</button>
         <h1 class="text-4xl font-bold mb-8 text-white">Lider Tablosu</h1>
         <div id="leaderboardContent" class="card">
@@ -110,19 +111,19 @@
         </div>
     </div>
 
-    <div id="quizPage" class="page w-full max-w-2xl text-center">
+    <div id="quizPage" class="page w-full max-w-2xl text-center px-2 sm:px-4">
          <button id="btnKategorilereDonQuiz" class="absolute top-4 left-4 text-white hover:text-gray-300 p-2"><i class="fas fa-arrow-left fa-lg"></i> Kategoriler</button>
-        <h1 id="quizPageTitle" class="text-3xl font-bold mb-2 text-white">Quiz Başlıyor!</h1>
+        <h1 id="quizPageTitle" class="text-3xl sm:text-4xl font-bold mb-2 text-white">Quiz Başlıyor!</h1>
         <p id="quizBreadcrumb" class="text-sm text-gray-300 mb-4"></p>
         <div class="card">
-            <img id="quizQuestionImage" src="" alt="Soru Resmi" class="mx-auto mb-4 rounded-lg max-h-60 object-contain" style="display:none;">
-            <p id="quizQuestionText" class="text-xl text-white mb-6">Sorular ve cevap seçenekleri burada gösterilecek.</p>
+            <img id="quizQuestionImage" src="" alt="Soru Resmi" class="mx-auto mb-4 rounded-lg max-h-52 sm:max-h-60 object-contain" style="display:none;">
+            <p id="quizQuestionText" class="text-lg sm:text-xl text-white mb-6">Sorular ve cevap seçenekleri burada gösterilecek.</p>
             <div id="quizOptionsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
             <div class="mt-6 flex justify-center items-center"><span id="questionCounter" class="text-white text-lg">Soru 1 / 10</span></div>
             
-            <div id="jokerContainer" class="mt-8 flex justify-center space-x-4" style="display: none;">
-                <button id="btnFiftyFifty" class="joker-btn"><i class="fas fa-adjust mr-2"></i>Yarı Yarıya</button>
-                <button id="btnAskExpert" class="joker-btn"><i class="fas fa-user-tie mr-2"></i>Uzmana Sor</button>
+            <div id="jokerContainer" class="mt-8 flex flex-col sm:flex-row justify-center items-center space-y-3 sm:space-y-0 sm:space-x-4" style="display: none;">
+                <button id="btnFiftyFifty" class="joker-btn w-full sm:w-auto"><i class="fas fa-adjust mr-2"></i>Yarı Yarıya</button>
+                <button id="btnAskExpert" class="joker-btn w-full sm:w-auto"><i class="fas fa-user-tie mr-2"></i>Uzmana Sor</button>
             </div>
         </div>
     </div>
@@ -152,15 +153,15 @@
         </div>
     </div>
 
-    <button id="btnGoToMainFixed" class="fixed bottom-4 right-4 bg-amber-500 hover:bg-amber-600 text-white p-3 rounded-full shadow-lg z-50 transition-opacity duration-300 opacity-0 pointer-events-none" title="Ana Menüye Dön">
+    <button id="btnGoToMainFixed" class="fixed bottom-6 right-6 bg-amber-600 hover:bg-amber-700 text-white p-4 rounded-full shadow-xl z-50 transition-all duration-300 opacity-0 pointer-events-none hover:scale-110" title="Ana Menüye Dön">
         <i class="fas fa-home fa-lg"></i>
     </button>
 
     <div class="ad-banner-bottom">
         <ins class="adsbygoogle"
              style="display:inline-block;width:320px;height:50px"
-             data-ad-client="ca-pub-3940256099942544"
-             data-ad-slot="6300978111"></ins>
+             data-ad-client="ca-pub-3940256099942544" <!-- Test Client ID -->
+             data-ad-slot="6300978111"></ins> <!-- Test Slot ID -->
         <script>
              (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
@@ -169,6 +170,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
-    <script src="script.js?v=1.0.3"></script> <!-- Cache Busting -->
+    <script src="script.js?v=1.0.5"></script> 
 </body>
 </html>
