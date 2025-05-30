@@ -37,7 +37,7 @@ body {
     cursor: pointer;
 }
 
-.btn-primary, .joker-btn { /* .joker-btn için ortak stiller */
+.btn-primary, .joker-btn { 
     background-color: #5046E5; 
 }
 .btn-primary:hover:not(:disabled), .joker-btn:hover:not(:disabled) { 
@@ -87,16 +87,15 @@ body {
     cursor: not-allowed;
 }
 
-/* Ana Sayfa Butonları - Genişlik Ayarı HTML'de Tailwind ile yapıldı (max-w-xs mx-auto) */
-#mainPage .space-y-3 { /* Tailwind space-y-3 veya space-y-4 kullanılabilir */
+#mainPage .space-y-3 { 
     display: flex;
     flex-direction: column;
-    gap: 0.75rem; /* sm:gap-1rem Tailwind'e göre ayarlanabilir */
+    gap: 0.75rem; 
     align-items: center; 
 }
 
 .card {
-    background-color: rgba(0, 0, 0, 0.35); /* Biraz daha belirgin */
+    background-color: rgba(0, 0, 0, 0.35); 
     border-radius: 16px; 
     padding: 20px; 
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
@@ -156,7 +155,7 @@ body {
     width: 64px; height: 64px; object-fit: contain; margin-bottom: 1rem; 
 }
 .item-card .placeholder-icon {
-    font-size: 3rem; margin-bottom: 1rem; color: #5046E5; /* Ana buton rengiyle uyumlu */
+    font-size: 3rem; margin-bottom: 1rem; color: #5046E5; 
 }
 .page { display: none; }
 .page.active { display: block; }
