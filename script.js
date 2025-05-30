@@ -1,5 +1,3 @@
-// script.js
-
 const firebaseConfig = { 
     apiKey: "AIzaSyD_MyAPTo1aI6ksKNoX2O7HDdWH6VFcEZQ", 
     authDomain: "sennekadarfirebasedeneme.firebaseapp.com",
@@ -75,7 +73,7 @@ const resultModalBadgeImage = document.getElementById('resultModalBadgeImage');
 const resultModalBadgeName = document.getElementById('resultModalBadgeName');
 const btnCloseResultModal = document.getElementById('btnCloseResultModal'); 
 const authStatusText = document.getElementById('authText');
-const authButtonGoogle = document.getElementById('authButtonGoogle'); 
+const authButtonGoogle = document.getElementById('authButtonGoogle');
 const btnGoToMainFixed = document.getElementById('btnGoToMainFixed');
 const jokerContainer = document.getElementById('jokerContainer');
 const btnFiftyFifty = document.getElementById('btnFiftyFifty');
@@ -100,7 +98,6 @@ auth.onAuthStateChanged(user => {
     if (user) {
         currentUser = user;
         if(authStatusText) authStatusText.textContent = `Giriş: ${user.displayName || user.email.split('@')[0]}`;
-        if(authButtonGoogle) authButtonGoogle.style.display = 'none'; 
         if(userEmailForSettings) userEmailForSettings.textContent = `Kullanıcı: ${user.email}`;
         if(btnLogout) btnLogout.style.display = 'block';
         
@@ -112,7 +109,6 @@ auth.onAuthStateChanged(user => {
     } else {
         currentUser = null;
         if(authStatusText) authStatusText.textContent = 'Giriş yapılmadı.';
-        if(authButtonGoogle) authButtonGoogle.style.display = 'none'; // Google butonu şimdilik hep gizli
         if(userEmailForSettings) userEmailForSettings.textContent = ``;
         if(btnLogout) btnLogout.style.display = 'none';
         if (profilePage && profilePage.style.display === 'block') { 
@@ -123,8 +119,8 @@ auth.onAuthStateChanged(user => {
     }
 });
 
-/* // Google ile Giriş Event Listener YORUM SATIRINDA
-if(authButtonGoogle) { 
+/*
+if(authButtonGoogle) {
     authButtonGoogle.addEventListener('click', () => {
         if (!auth) { console.error("Firebase Auth başlatılmamış!"); return; }
         const provider = new firebase.auth.GoogleAuthProvider();
@@ -133,29 +129,29 @@ if(authButtonGoogle) {
                 console.log("Google ile giriş başarılı:", result.user);
                 const user = result.user;
                 const userRef = firestore.collection('users').doc(user.uid);
-                
-                await userRef.set({ 
+                const googleUserRef = firestore.collection('googleUsers').doc(user.uid); 
+                const batch = firestore.batch();
+                batch.set(userRef, {
                     displayName: user.displayName || user.email.split('@')[0],
                     email: user.email,
-                    photoURL: user.photoURL, 
-                    authProvider: "google",
+                    leaderboardPuan: 0,
+                    authProvider: "google"
+                }, { merge: true });
+                batch.set(googleUserRef, {
+                    uid: user.uid,
+                    displayName: user.displayName,
+                    email: user.email,
+                    photoURL: user.photoURL,
                     lastLogin: firebase.firestore.FieldValue.serverTimestamp()
                 }, { merge: true });
-
-                const userDoc = await userRef.get();
-                if (!userDoc.data() || typeof userDoc.data().leaderboardPuan === 'undefined') {
-                    await userRef.update({ leaderboardPuan: 0 });
-                }
-                
+                await batch.commit();
                 showPage(mainPage); 
             })
             .catch((error) => {
                 console.error("Google ile giriş hatası:", error);
-                if (authError && profilePage.style.display === 'block') { 
+                if (authError) { 
                     authError.textContent = `Google ile giriş hatası: ${error.message}`;
                     authError.style.display = 'block';
-                } else {
-                    alert(`Google ile giriş sırasında bir hata oluştu. Lütfen tekrar deneyin. (${error.code})`);
                 }
             });
     });
@@ -246,13 +242,10 @@ if(btnLogin) {
 function showPage(pageToShow) { 
     document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
     
-    const bodyElement = document.body;
-
     if (pageToShow) {
         pageToShow.style.display = 'block';
     } else if (mainPage) { 
         mainPage.style.display = 'block';
-        pageToShow = mainPage; 
     }
 
     if (btnGoToMainFixed) {
@@ -272,11 +265,6 @@ function showPage(pageToShow) {
         } else {
             jokerContainer.style.display = 'none';
         }
-    }
-    if (pageToShow && (pageToShow.id === 'mainPage' || pageToShow.id === 'quizPage')) {
-        bodyElement.classList.add('has-side-ads');
-    } else {
-        bodyElement.classList.remove('has-side-ads');
     }
 }
 document.querySelectorAll('.btn-back-to-main-simple').forEach(button => { 
@@ -598,9 +586,9 @@ async function handleAskExpertJoker() {
         const jokerDocRef = firestore.collection('others').doc('joker'); 
         const docSnap = await jokerDocRef.get();
 
-        if (docSnap.exists) { 
+        if (docSnap.exists) { // Düzeltildi
             const jokerData = docSnap.data();
-            if(expertImage) expertImage.src = jokerData.ImageUrl || 'https://placehold.co/120x120/718096/FFFFFF?text=UZMAN&font=Inter'; 
+            if(expertImage) expertImage.src = jokerData.ImageUrl || 'https://placehold.co/120x120/718096/FFFFFF?text=UZMAN&font=Inter'; // Düzeltildi
             if(expertText) expertText.textContent = jokerData.Text || "Biraz düşündükten sonra...";
 
             const currentQuestion = currentQuizQuestions[currentQuestionIndex];
@@ -672,7 +660,7 @@ async function finishQuiz() {
         if (currentSelectedMainCategory && currentSelectedSubCategory && currentSelectedQuiz && currentSelectedQuiz.id) { 
             const notlarPath = `categories/${currentSelectedMainCategory.id}/subcategories/${currentSelectedSubCategory.id}/quizzes/${currentSelectedQuiz.id}/notlar/${resultCategory}`;
             const notlarDoc = await firestore.doc(notlarPath).get();
-            if (notlarDoc.exists) { 
+            if (notlarDoc.exists) { // Düzeltildi
                 const notlarData = notlarDoc.data();
                 if(resultModalComment) resultModalComment.textContent = notlarData.yorum || "Harika bir iş çıkardın!";
                 if (notlarData.imageURL && resultModalCommentImage) {
@@ -685,7 +673,7 @@ async function finishQuiz() {
 
             const rozetPath = `categories/${currentSelectedMainCategory.id}/subcategories/${currentSelectedSubCategory.id}/quizzes/${currentSelectedQuiz.id}/rozet/rozet`;
             const rozetDoc = await firestore.doc(rozetPath).get();
-            if (rozetDoc.exists) { 
+            if (rozetDoc.exists) { // Düzeltildi
                 const rozetData = rozetDoc.data();
                 quizSpecificBadgeName = rozetData.rozetAdi || rozetData.name || "Quiz Rozeti";
                 quizSpecificBadgeImageUrl = rozetData.rozetPNG || rozetData.imageURL;
@@ -810,16 +798,14 @@ async function loadUserProfile() {
     profileContentText.innerHTML = '<p>Profil bilgileri yükleniyor...</p>';
     try {
         const userDoc = await firestore.collection('users').doc(currentUser.uid).get();
-        if (userDoc.exists) { 
+        if (userDoc.exists) { // Düzeltildi
             const userData = userDoc.data();
             let html = `
-                ${userData.photoURL ? `<img src="${userData.photoURL}" alt="Profil Resmi" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-white">` : ''}
                 <h2 class="text-xl font-semibold mb-2">${userData.displayName || currentUser.email.split('@')[0]}</h2>
                 <p class="mb-1">Email: ${currentUser.email}</p>
                 <p class="mb-4">Liderlik Puanı: ${userData.leaderboardPuan || 0}</p>
-                <p class="text-xs text-gray-400 mb-3">Giriş Yöntemi: ${userData.authProvider || 'Bilinmiyor'}</p>
                 <h3 class="text-lg font-medium mt-3 mb-2">Çözülen Quizler:</h3>
-                <ul class="list-disc list-inside text-left text-sm max-h-48 overflow-y-auto">`; 
+                <ul class="list-disc list-inside text-left text-sm">`;
             
             const solvedQuizzesSnapshot = await firestore.collection('users').doc(currentUser.uid).collection('solvedQuizzes').orderBy('tarih', 'desc').limit(10).get(); 
             if (solvedQuizzesSnapshot.empty) {
@@ -827,7 +813,7 @@ async function loadUserProfile() {
             } else {
                 solvedQuizzesSnapshot.forEach(doc => {
                     const quizData = doc.data();
-                    html += `<li>${doc.id.replace(/_/g, ' ')}: ${quizData.puan} puan (${new Date(quizData.tarih.toDate()).toLocaleDateString()})</li>`; 
+                    html += `<li>${doc.id}: ${quizData.puan} puan (${new Date(quizData.tarih.toDate()).toLocaleDateString()})</li>`;
                 });
             }
             html += '</ul>';
@@ -866,11 +852,11 @@ if(btnRozetlerim) {
             return;
         }
         showPage(badgesPage);
-        if(badgesContent) badgesContent.innerHTML = '<p class="col-span-full">Rozetler yükleniyor...</p>';
+        if(badgesContent) badgesContent.innerHTML = '<p class="col-span-3">Rozetler yükleniyor...</p>';
         try {
             const badgesSnapshot = await firestore.collection('users').doc(currentUser.uid).collection('rozetler').orderBy('kazanmaTarihi', 'desc').get();
             if (badgesSnapshot.empty) {
-                if(badgesContent) badgesContent.innerHTML = '<p class="col-span-full">Henüz kazanılmış rozet yok.</p>';
+                if(badgesContent) badgesContent.innerHTML = '<p class="col-span-3">Henüz kazanılmış rozet yok.</p>';
             } else {
                 let html = '';
                 badgesSnapshot.forEach(doc => {
@@ -886,7 +872,7 @@ if(btnRozetlerim) {
             }
         } catch (error) {
             console.error("Rozetler yüklenirken hata:", error);
-            if(badgesContent) badgesContent.innerHTML = '<p class="col-span-full">Rozetler yüklenirken bir hata oluştu.</p>';
+            if(badgesContent) badgesContent.innerHTML = '<p class="col-span-3">Rozetler yüklenirken bir hata oluştu.</p>';
         }
     });
 }
@@ -950,3 +936,4 @@ if (mainPage) {
 } else {
     console.error("mainPage elementi bulunamadı!");
 }
+    
