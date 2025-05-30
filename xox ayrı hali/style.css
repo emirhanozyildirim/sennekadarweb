@@ -1,0 +1,589 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        :root {
+            --blue-color: #007bff;
+            --orange-color: #fd7e14;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(to right top, #65dfc9, #6cdbeb);
+            color: var(--dark-color);
+            overflow: hidden; /* Prevent scrollbars from gradient */
+        }
+
+        #app-container {
+            width: 90%;
+            max-width: 1000px; /* Adjust as needed */
+            min-height: 80vh;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px); /* Safari */
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px 0 var(--shadow-color);
+            padding: 30px;
+            position: relative; /* Needed for absolute positioning of popups */
+            overflow-y: auto; /* Allow scrolling if content overflows */
+        }
+
+        h1, h2, h3, h4 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+        }
+
+        /* Screen Management */
+        .screen {
+            display: none; /* Hide all screens by default */
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .screen.active {
+            display: flex; /* Show the active screen */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Buttons */
+        button {
+            background: linear-gradient(to right, var(--blue-color), #0056b3);
+            color: var(--light-color);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 10px 5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+        }
+
+        button.back-btn {
+             background: linear-gradient(to right, #6c757d, #5a6268);
+             box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+        }
+        button.back-btn:hover {
+            box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+        }
+        button.back-btn:active {
+            box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+        }
+
+
+        /* Inputs */
+        input[type="text"] {
+            padding: 10px 15px;
+            margin-bottom: 15px;
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            font-size: 1rem;
+            width: 80%;
+            max-width: 300px;
+            text-align: center;
+            color: var(--dark-color);
+            outline: none;
+        }
+
+        input[type="text"]::placeholder {
+            color: rgba(52, 58, 64, 0.7);
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--blue-color);
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+
+        /* --- Main Menu Specific Styles --- */
+        #main-menu h1 {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: var(--dark-color); /* Ensure contrast */
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        #main-menu button {
+            min-width: 200px;
+            font-size: 1.1rem;
+        }
+
+        /* --- Placeholder for other screen styles --- */
+        /* Styles for Create Game, Join Game, Lobby, Game Screen will be added later */
+
+        /* --- Game Screen Layout (Basic) --- */
+        #game-screen {
+            /* Styles will be added */
+        }
+
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 100%;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .player-info, .score-board {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+        }
+        .player-info h3 { margin-bottom: 5px; font-size: 1.1rem;}
+        .player-info p { margin-bottom: 10px; font-size: 1rem; font-weight: 600;}
+        .pieces-counter span { margin: 0 3px; font-weight: bold;}
+
+        .score-board h2 { margin-bottom: 10px; font-size: 1.3rem;}
+        .score-board p { font-size: 1.2rem; margin-bottom: 5px;}
+        #current-player-indicator { font-weight: bold; }
+
+
+        .game-area {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .player-pieces {
+            width: 150px; /* Adjust as needed */
+            min-height: 300px; /* Placeholder height */
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .player-pieces h4 { font-size: 1rem; margin-bottom: 15px; }
+
+        .board-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #game-board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px); /* Adjust cell size */
+            grid-template-rows: repeat(3, 100px);    /* Adjust cell size */
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .move-history {
+            width: 100%;
+            max-height: 150px;
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            display: none; /* Hide move history */
+        }
+        .move-history h4 { margin-bottom: 10px; }
+        #moves-list {
+            list-style: none;
+            padding: 0;
+            font-size: 0.9rem;
+        }
+        #moves-list li {
+            padding: 3px 0;
+            border-bottom: 1px dashed var(--glass-border);
+        }
+        #moves-list li:last-child {
+            border-bottom: none;
+        }
+
+
+        /* --- Popup Styles --- */
+        .popup {
+            display: none; /* Hidden by default */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .popup.active {
+            display: flex;
+        }
+
+        .popup-content {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 30px 40px;
+            border-radius: 15px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px 0 var(--shadow-color);
+            text-align: center;
+            min-width: 300px;
+        }
+
+        .popup-content h2 {
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+        }
+
+        /* --- Piece Styles (Placeholders) --- */
+        .piece {
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: white;
+            cursor: grab;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            position: relative; /* For potential stacking context */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .piece:active {
+            cursor: grabbing;
+            transform: scale(1.1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .piece.small { width: 40px; height: 40px; font-size: 0.8rem; }
+        .piece.medium { width: 60px; height: 60px; font-size: 1rem; }
+        .piece.large { width: 80px; height: 80px; font-size: 1.2rem; }
+
+        .piece.blue { background-color: var(--blue-color); }
+        .piece.orange { background-color: var(--orange-color); }
+
+        /* Styles for pieces within the player's available pieces area */
+        .player-pieces .piece-display {
+            display: flex;
+            flex-direction: column; /* Stack piece and count vertically */
+            align-items: center;
+            margin-bottom: 15px; /* Space between piece displays */
+        }
+
+        .player-pieces .piece {
+            margin-bottom: 5px; /* Space between piece and its count */
+        }
+
+        .player-pieces .piece-count {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .piece.non-draggable {
+            cursor: default;
+            opacity: 0.6; /* Make non-draggable pieces slightly faded */
+        }
+
+
+        /* Styles for pieces on the board */
+        .board-cell {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative; /* Needed for absolute positioning of pieces inside */
+            overflow: hidden; /* Hide parts of larger pieces if needed */
+            border: 1px solid transparent; /* For hover effect */
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .board-cell.droppable-hover {
+            background-color: rgba(0, 255, 0, 0.2);
+            border-color: rgba(0, 255, 0, 0.5);
+        }
+
+        /* Allow pieces to stack inside cells */
+        .board-cell .piece {
+            position: absolute; /* Stack pieces */
+            /* No margin needed when absolute */
+        }
+
+        /* Ready Status Indicator */
+        #creator-ready-status::after,
+        #joiner-ready-status::after {
+            content: '⏳'; /* Waiting */
+            margin-left: 5px;
+            display: inline-block;
+        }
+        #creator-ready-status.ready::after,
+        #joiner-ready-status.ready::after {
+            content: '✅'; /* Ready */
+        }
+
+        /* Current Player Indicator Styling */
+        #current-player-indicator.blue { color: var(--blue-color); }
+        #current-player-indicator.orange { color: var(--orange-color); }
+
+        /* Player Info Highlighting */
+        .player-info {
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            border-radius: 10px;
+            padding: 15px;
+        }
+        .player-info.active-turn {
+            transform: scale(1.03);
+            box-shadow: 0 0 15px var(--glass-border);
+        }
+        .player-info.player-blue.active-turn { box-shadow: 0 0 15px var(--blue-color); }
+        .player-info.player-orange.active-turn { box-shadow: 0 0 15px var(--orange-color); }
+
+        /* Piece Counter Specifics */
+        .pieces-counter { font-size: 0.9rem; }
+        .pieces-counter .count-s,
+        .pieces-counter .count-m,
+        .pieces-counter .count-l {
+            display: inline-block;
+            min-width: 15px; /* Ensure alignment */
+            text-align: center;
+        }
+
+        /* Lobby Status */
+        #lobby-status, #random-match-status {
+            margin-top: 15px;
+            font-style: italic;
+            color: #555;
+        }
+
+        /* Winning Cell Highlight */
+        .board-cell.winning-cell {
+            background-color: rgba(255, 215, 0, 0.5); /* Gold highlight */
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- Responsive Styles --- */
+        @media (max-width: 768px) {
+            #app-container {
+                width: 95%;
+                padding: 20px;
+                min-height: 90vh;
+            }
+
+            h1 { font-size: 2rem; }
+            h2 { font-size: 1.5rem; }
+
+            #main-menu button {
+                 min-width: 180px;
+                 font-size: 1rem;
+                 padding: 10px 20px;
+            }
+
+            input[type="text"] {
+                width: 90%;
+            }
+
+            /* Game Screen Mobile Layout */
+            .game-area {
+                flex-direction: column; /* Stack board and pieces vertically */
+                align-items: center;   /* Center items horizontally */
+            }
+
+            .board-container {
+                order: 1; /* Board comes first */
+                width: auto; /* Allow board to size naturally */
+                margin-bottom: 20px; /* Space below board */
+            }
+             #game-board {
+                 grid-template-columns: repeat(3, 80px); /* Smaller cells on mobile */
+                 grid-template-rows: repeat(3, 80px);
+                 gap: 8px;
+             }
+             .piece.small { width: 30px; height: 30px; font-size: 0.7rem; }
+             .piece.medium { width: 45px; height: 45px; font-size: 0.9rem; }
+             .piece.large { width: 65px; height: 65px; font-size: 1.1rem; }
+
+
+            .player-pieces {
+                order: 2; /* Pieces come second */
+                width: 95%; /* Take more width */
+                max-width: 400px; /* Limit max width */
+                min-height: auto; /* Adjust height */
+                flex-direction: row; /* Arrange pieces horizontally */
+                justify-content: space-around; /* Distribute pieces */
+                margin-top: 10px; /* Space above pieces */
+                padding: 10px;
+            }
+
+            .player-pieces h4 {
+                display: none; /* Hide title on mobile */
+            }
+
+            .player-pieces .piece-display {
+                 margin-bottom: 0; /* Remove bottom margin */
+                 margin-right: 5px; /* Add some space between pieces */
+                 margin-left: 5px;
+            }
+             .player-pieces .piece {
+                 margin-bottom: 3px; /* Smaller space between piece and count */
+             }
+             .player-pieces .piece-count {
+                 font-size: 0.8rem;
+             }
+
+            /* Hide the inactive player's pieces on mobile */
+            .player-pieces.inactive-mobile {
+                display: none;
+            }
+
+            .game-info {
+                flex-direction: column;
+                align-items: center;
+            }
+            .player-info, .score-board {
+                 width: 90%;
+                 margin-bottom: 10px;
+            }
+            .score-board { order: 1; } /* Score first */
+            .player-info.player-blue { order: 2; }
+            .player-info.player-orange { order: 3; }
+
+            /* --- ADDED: Reduce font sizes for mobile game info --- */
+            .game-info .player-info h3 { font-size: 0.9rem; margin-bottom: 1px;} /* Smaller */
+            .game-info .player-info p { font-size: 0.85rem; margin-bottom: 3px;} /* Smaller */
+            .game-info .score-board h2 { font-size: 1rem; margin-bottom: 2px;} /* Smaller */
+            .game-info .score-board p { font-size: 0.9rem; margin-bottom: 1px;}   /* Smaller */
+            /* --- END ADDED --- */
+
+            /* --- ADDED: Mobile Popup Styles --- */
+            #game-over-popup .popup-content {
+                 min-width: 280px; /* Slightly smaller min-width */
+                 padding: 20px 25px; /* Reduced padding */
+                 background: rgba(52, 58, 64, 0.9); /* Darker for mobile? */
+                 backdrop-filter: blur(5px);
+                 -webkit-backdrop-filter: blur(5px);
+                 color: #f8f9fa;
+                 border: 1px solid rgba(255, 255, 255, 0.3);
+                 box-shadow: 0 6px 25px rgba(0, 0, 0, 0.25);
+            }
+             #game-over-popup .popup-content h2 {
+                 font-size: 1.3rem; /* Slightly smaller heading */
+                 color: #f8f9fa;
+            }
+            #game-over-popup p {
+                 font-size: 0.95rem; /* Adjust paragraph size */
+                 color: #f8f9fa;
+            }
+            #game-over-popup button {
+                padding: 10px 20px; /* Adjust button padding */
+                font-size: 0.9rem; /* Adjust button font size */
+                margin-top: 10px;
+            }
+             #game-over-popup button#decline-rematch-btn,
+             #game-over-popup button#new-game-btn {
+                 background: linear-gradient(to right, #6c757d, #5a6268);
+             }
+            /* --- END ADDED --- */
+
+        }
+         @media (max-width: 480px) {
+              #game-board {
+                 grid-template-columns: repeat(3, 60px); /* Even smaller cells */
+                 grid-template-rows: repeat(3, 60px);
+                 gap: 5px;
+             }
+             .piece.small { width: 25px; height: 25px; font-size: 0.6rem; }
+             .piece.medium { width: 35px; height: 35px; font-size: 0.8rem; }
+             .piece.large { width: 50px; height: 50px; font-size: 1rem; }
+
+             .player-pieces {
+                 padding: 5px;
+             }
+             .player-pieces .piece-display {
+                 margin-right: 2px;
+                 margin-left: 2px;
+             }
+         }
+
+    /* --- Click-to-Move Styles --- */
+    .piece.selected-piece {
+         box-shadow: 0 0 10px 4px gold; /* Highlight selected piece */
+         transform: scale(1.1);
+         cursor: grabbing !important; /* Ensure cursor changes */
+    }
+    .board-cell.clickable-target {
+         cursor: pointer;
+         background-color: rgba(0, 255, 0, 0.2); /* Highlight for clickable cells */
+         border: 1px solid rgba(0, 255, 0, 0.5);
+    }
+    /* --- End Click-to-Move Styles --- */
+
+    /* --- IMPROVED POPUP STYLES --- */
+    #game-over-popup .popup-content {
+        background: rgba(52, 58, 64, 0.8); /* Darker, more opaque background */
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        color: var(--light-color); /* Light text color for contrast */
+        border-color: rgba(255, 255, 255, 0.3);
+    }
+    #game-over-popup .popup-content h2 {
+         color: var(--light-color); /* Ensure heading is also light */
+         margin-bottom: 25px;
+         font-size: 1.5rem;
+    }
+    /* Style buttons inside the popup for better visibility */
+    #game-over-popup button {
+         background: linear-gradient(to right, var(--blue-color), #0056b3);
+         margin-top: 10px;
+    }
+    #game-over-popup button#decline-rematch-btn,
+    #game-over-popup button#new-game-btn {
+         background: linear-gradient(to right, #6c757d, #5a6268);
+    }
+    /* --- END IMPROVED POPUP STYLES --- */
