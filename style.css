@@ -1,6 +1,7 @@
 body {
     font-family: 'Inter', sans-serif;
-    background-color: #F79F1F; /* Ana turuncu arka plan */
+    background-image: url('images/quiz_background.jpg');
+    background-size: cover;
     color: #fff;
 }
 .btn-primary, .joker-btn {
